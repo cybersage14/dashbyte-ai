@@ -1,0 +1,8 @@
+{
+  "extends": ["stylelint-config-recommended", "stylelint-config-recess-order"],
+  "rules": {
+    "at-rule-no-unknown": null,
+    "declaration-block-trailing-semicolon": null,
+    "no-descending-specificity": null
+  }
+}
