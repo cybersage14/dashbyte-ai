@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import chatReducer from './chatSlice';
+import { createWrapper } from 'next-redux-wrapper';
+import { authSlice } from './slices/authSlice';
+import { commentSlice } from './slices/commentSlice';
 
-const store = configureStore({
+const makeStore = () => configureStore({
   reducer: {
-    chat: chatReducer,
+    [authSlice.name]: authSlice.reducer,
+    [commentSlice.name]: commentSlice.reducer,
   },
+  devTools: true,
 });
 
-export default store;
+export const wrapper = createWrapper(makeStore);
