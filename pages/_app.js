@@ -1,4 +1,4 @@
-import store from '../store';
+import store from '../redux/store';
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
