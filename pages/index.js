@@ -1,12 +1,12 @@
 import React from 'react';
 import Layout from '../components/layout';
+import Chat from '../components/chat';
 
 const Page = () => {
   return (
     <Layout>
-      {/* Replace this with the content for your home page */}
       <div className="relative flex place-items-center">
-        {/* Your content goes here */}
+        <Chat />
       </div>
     </Layout>
   );
