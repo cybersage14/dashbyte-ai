@@ -10,10 +10,8 @@ function Chat() {
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    // Fetch initial messages from the server when the component mounts
     axios.post('/api/chat', { messages: [] })
       .then(response => {
-        // Dispatch an action to add the initial messages to the chat state
         dispatch({ type: 'ADD_MESSAGES', messages: response.data.messages });
       })
       .catch(error => {
@@ -22,10 +20,8 @@ function Chat() {
   }, [dispatch]);
 
   const handleSendMessage = () => {
-    // Send the user's message to the server and get the AI's response
     axios.post('/api/chat', { messages: [...chatState.messages, { role: 'user', content: input }] })
       .then(response => {
-        // Dispatch an action to add the user's message and the AI's response to the chat state
         dispatch({ type: 'ADD_MESSAGES', messages: [{ role: 'user', content: input }, { role: 'ai', content: response.data.message }] });
         setInput('');
       })
@@ -35,7 +31,7 @@ function Chat() {
   };
 
   return (
-    <div>
+    <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
       <ChatList messages={chatState.messages} />
       <ChatPanel input={input} setInput={setInput} onSendMessage={handleSendMessage} />
     </div>

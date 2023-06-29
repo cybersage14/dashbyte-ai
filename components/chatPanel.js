@@ -14,9 +14,9 @@ function ChatPanel({ onSendMessage }) {
   };
 
   return (
-    <div>
-      <input type="text" value={input} onChange={handleInputChange} onKeyPress={handleKeyPress} />
-      <button onClick={onSendMessage}>Send</button>
+    <div className="flex items-center">
+      <input type="text" value={input} onChange={handleInputChange} onKeyPress={handleKeyPress} className="flex-grow rounded-l px-2 py-1" />
+      <button onClick={onSendMessage} className="bg-blue-500 text-white rounded-r px-4">Send</button>
     </div>
   );
 }
