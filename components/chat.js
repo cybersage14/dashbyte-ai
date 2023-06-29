@@ -1,18 +1,45 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { addMessage } from '../redux/chatSlice';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import ChatList from './ChatList';
+import ChatPanel from './ChatPanel';
 
-export default function Chat({ id }) {
-  const messages = useSelector((state) => state.chat.messages);
+function Chat() {
   const dispatch = useDispatch();
+  const chatState = useSelector(state => state.chat);
+  const [input, setInput] = useState('');
 
-  const handleSendMessage = (message) => {
-    dispatch(addMessage(message));
-    // TODO: Send the message to your chat API
+  useEffect(() => {
+    // Fetch initial messages from the server when the component mounts
+    axios.post('/api/chat', { messages: [] })
+      .then(response => {
+        // Dispatch an action to add the initial messages to the chat state
+        dispatch({ type: 'ADD_MESSAGES', messages: response.data.messages });
+      })
+      .catch(error => {
+        console.error('An error occurred while fetching the initial messages:', error);
+      });
+  }, [dispatch]);
+
+  const handleSendMessage = () => {
+    // Send the user's message to the server and get the AI's response
+    axios.post('/api/chat', { messages: [...chatState.messages, { role: 'user', content: input }] })
+      .then(response => {
+        // Dispatch an action to add the user's message and the AI's response to the chat state
+        dispatch({ type: 'ADD_MESSAGES', messages: [{ role: 'user', content: input }, { role: 'ai', content: response.data.message }] });
+        setInput('');
+      })
+      .catch(error => {
+        console.error('An error occurred while sending the message:', error);
+      });
   };
 
   return (
     <div>
-      {/* TODO: Render the chat messages and controls */}
+      <ChatList messages={chatState.messages} />
+      <ChatPanel input={input} setInput={setInput} onSendMessage={handleSendMessage} />
     </div>
   );
 }
+
+export default Chat;
