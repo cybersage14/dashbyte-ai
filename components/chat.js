@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import ChatList from './ChatList';
-import ChatPanel from './ChatPanel';
+import ChatList from './chatList';
+import ChatPanel from './chatPanel';
 
 function Chat() {
   const dispatch = useDispatch();
