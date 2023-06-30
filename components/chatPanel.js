@@ -1,22 +1,47 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 
-function ChatPanel({ onSendMessage }) {
-  const [input, setInput] = useState('');
+function ChatPanel({ onSendMessage, input, setInput }) {
+  const inputRef = useRef();
 
-  const handleInputChange = (event) => {
-    setInput(event.target.value);
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      onSendMessage();
-    }
+  const handleSendMessage = () => {
+    onSendMessage();
+    inputRef.current.focus();
   };
 
   return (
-    <div className="flex items-center">
-      <input type="text" value={input} onChange={handleInputChange} onKeyPress={handleKeyPress} className="flex-grow rounded-l px-2 py-1 text-black bg-white" />
-      <button onClick={onSendMessage} className="bg-blue-500 text-white rounded-r px-4">Send</button>
+    <div className="border-t-2 border-gray-200 px-4 pt-2 mb-2 sm:mb-0">
+      <div className="relative flex">
+        <input
+          type="text"
+          placeholder="Write something..."
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-full py-3"
+          ref={inputRef}
+        />
+        <div className="absolute right-0 items-center inset-y-0 hidden sm:flex">
+          <button
+            type="button"
+            onClick={handleSendMessage}
+            className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="h-6 w-6 text-white"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

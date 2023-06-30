@@ -1,15 +1,11 @@
-import { useSelector } from 'react-redux';
+import React from 'react';
 
-function ChatList() {
-  const messages = useSelector(state => state.chat.messages);
-
+function ChatList({ messages }) {
   return (
-    <div className="overflow-y-auto h-64 mb-4">
+    <div className="space-y-4">
       {messages.map((message, index) => (
-        <div key={index} className={`mb-2 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
-          <span className={`inline-block rounded px-2 py-1 ${message.role === 'user' ? 'bg-blue-500 text-black' : 'bg-gray-300 text-black'}`}>
-            {message.content}
-          </span>
+        <div key={index} className={`max-w-xs mx-2 ${message.role === 'user' ? 'ml-auto bg-blue-500 text-white rounded-br-none' : 'mr-auto bg-white text-gray-800 rounded-bl-none'} rounded-md p-2`}>
+          {message.content}
         </div>
       ))}
     </div>
@@ -17,3 +13,4 @@ function ChatList() {
 }
 
 export default ChatList;
+

@@ -1,36 +1,35 @@
 require('dotenv').config();
 const express = require('express');
-const axios = require('axios');
 const cors = require('cors');
+const axios = require('axios');
 
 const app = express();
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-// Create an axios instance for OpenAI
-const openai = axios.create({
-  baseURL: 'https://api.openai.com/v1',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-  }
-});
+let conversation = [];
 
-app.post('/api/chat', async (req, res) => {
-  const messages = req.body.messages;
-
-  try {
-    // Send a chat completion request to the OpenAI API
-    const response = await openai.post('/chat/completions', {
-      model: 'gpt-3.5-turbo',
-      messages: messages
+app.post('/api/chat', (req, res) => {
+  conversation = [...conversation, ...req.body.messages];
+  axios.post('https://api.openai.com/v1/chat/completions', {
+    model: 'gpt-3.5-turbo',
+    messages: conversation
+  }, {
+    headers: {
+      'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+    }
+  })
+    .then(response => {
+      conversation = [...conversation, response.data.choices[0].message];
+      res.json({ messages: conversation });
+    })
+    .catch(error => {
+      console.error('An error occurred while processing the chat:', error);
+      res.status(500).json({ error: 'An error occurred while processing the chat.' });
     });
-
-    res.json({ message: response.data.choices[0].message.content });
-  } catch (error) {
-    console.error('An error occurred while processing the chat:', error);
-    res.status(500).json({ error: error.toString() });
-  }
 });
 
-app.listen(5000, () => console.log('Server listening on port 5000'));
+app.listen(5000, () => {
+  console.log('Server listening on port 5000');
+});
+
