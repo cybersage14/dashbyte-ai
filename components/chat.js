@@ -10,7 +10,7 @@ function Chat() {
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    axios.post('http://localhost:5000/api/chat', { messages: [] })
+    axios.post('http://localhost:5000/api/chat', { messages: [{ role: 'system', content: 'You are a helpful assistant.' }] })
       .then(response => {
         dispatch({ type: 'ADD_MESSAGES', messages: response.data.messages });
         console.log('Current chat state:', chatState.messages); //log
@@ -18,8 +18,7 @@ function Chat() {
       .catch(error => {
         console.error('An error occurred while fetching the initial messages:', error);
       });
-  }, [dispatch]);
-  
+  }, [dispatch]);  
 
   const handleSendMessage = () => {
     axios.post('http://localhost:5000/api/chat', { messages: [...chatState.messages, { role: 'user', content: input }] })
