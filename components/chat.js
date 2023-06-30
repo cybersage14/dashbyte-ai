@@ -13,22 +13,26 @@ function Chat() {
     axios.post('http://localhost:5000/api/chat', { messages: [] })
       .then(response => {
         dispatch({ type: 'ADD_MESSAGES', messages: response.data.messages });
+        console.log('Current chat state:', chatState.messages); //log
       })
       .catch(error => {
         console.error('An error occurred while fetching the initial messages:', error);
       });
   }, [dispatch]);
+  
 
   const handleSendMessage = () => {
     axios.post('http://localhost:5000/api/chat', { messages: [...chatState.messages, { role: 'user', content: input }] })
       .then(response => {
+        console.log('Received response:', response.data); //log
+  
         dispatch({ type: 'ADD_MESSAGES', messages: [{ role: 'user', content: input }, { role: 'ai', content: response.data.message }] });
         setInput('');
       })
       .catch(error => {
         console.error('An error occurred while sending the message:', error);
       });
-  };
+  };  
 
   return (
     <div className="bg-white rounded shadow p-4 max-w-md mx-auto">
