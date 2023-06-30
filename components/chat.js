@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import ChatList from './chatList';
 import ChatPanel from './chatPanel';
+import { addMessages } from '../redux/chatSlice'; // Import the addMessages action
 
 function Chat() {
   const chatState = useSelector(state => state.chat);
@@ -12,8 +13,8 @@ function Chat() {
   useEffect(() => {
     axios.post('http://localhost:5000/api/chat', { messages: [{ role: 'system', content: 'You are a helpful assistant.' }] })
       .then(response => {
-        console.log('Initial messages:', response.data.messages); // Add logging
-        dispatch({ type: 'ADD_MESSAGES', messages: response.data.messages });
+        console.log('Initial messages:', response.data.messages);
+        dispatch(addMessages(response.data.messages)); // Dispatch the addMessages action with the correct type and payload
         console.log('Current chat state:', chatState.messages);
       })
       .catch(error => {
@@ -23,11 +24,11 @@ function Chat() {
 
   const onSendMessage = () => {
     const messages = [...chatState.messages, { role: 'user', content: input }];
-    console.log('Updated messages:', messages); // Add logging
+    console.log('Updated messages:', messages);
     axios.post('http://localhost:5000/api/chat', { messages })
       .then(response => {
         console.log('Received response:', response.data);
-        dispatch({ type: 'ADD_MESSAGES', messages: response.data.messages });
+        dispatch(addMessages(response.data.messages)); // Dispatch the addMessages action with the correct type and payload
       })
       .catch(error => {
         console.error('An error occurred while sending the message:', error);
