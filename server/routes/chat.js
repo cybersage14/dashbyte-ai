@@ -5,9 +5,12 @@ module.exports = (app) => {
     const chatMessages = req.body.messages;
     const context = req.body.context;
     const selectedParts = req.body.selectedParts;
-  
+
+    console.log('Request body:', req.body); // Add logging
+
     try {
       const aiMessage = await getAiMessage(chatMessages, context, selectedParts);
+      console.log('AI message:', aiMessage); // Add logging
       res.json({ message: aiMessage });
     } catch (error) {
       console.error('An error occurred while creating chat with OpenAI API:', error);
@@ -19,5 +22,4 @@ module.exports = (app) => {
       res.status(500).json({ message: 'An error occurred while processing your request.', error: error.message });
     }
   });
-  
 };

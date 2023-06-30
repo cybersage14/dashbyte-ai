@@ -5,7 +5,7 @@ import Chat from '../components/chat';
 const Page = () => {
   return (
     <Layout>
-      <div className="relative flex place-items-center">
+      <div className="w-full h-screen pt-100 mt-60">
         <Chat />
       </div>
     </Layout>

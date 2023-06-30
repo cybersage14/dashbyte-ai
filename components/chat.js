@@ -12,8 +12,9 @@ function Chat() {
   useEffect(() => {
     axios.post('http://localhost:5000/api/chat', { messages: [{ role: 'system', content: 'You are a helpful assistant.' }] })
       .then(response => {
+        console.log('Initial messages:', response.data.messages); // Add logging
         dispatch({ type: 'ADD_MESSAGES', messages: response.data.messages });
-        console.log('Current chat state:', chatState.messages); //log
+        console.log('Current chat state:', chatState.messages);
       })
       .catch(error => {
         console.error('An error occurred while fetching the initial messages:', error);
@@ -22,10 +23,11 @@ function Chat() {
 
   const onSendMessage = () => {
     const messages = [...chatState.messages, { role: 'user', content: input }];
+    console.log('Updated messages:', messages); // Add logging
     axios.post('http://localhost:5000/api/chat', { messages })
       .then(response => {
+        console.log('Received response:', response.data);
         dispatch({ type: 'ADD_MESSAGES', messages: response.data.messages });
-        console.log('Received response:', response.data); //log
       })
       .catch(error => {
         console.error('An error occurred while sending the message:', error);
