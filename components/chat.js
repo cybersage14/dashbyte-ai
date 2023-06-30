@@ -11,16 +11,27 @@ function Chat() {
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    axios.post('http://localhost:5000/api/chat', { messages: [{ role: 'system', content: 'You are a helpful assistant.' }] })
-      .then(response => {
-        console.log('Initial messages:', response.data.messages);
-        dispatch(addMessages(response.data.messages)); // Dispatch the addMessages action with the correct type and payload
-        console.log('Current chat state:', chatState.messages);
-      })
-      .catch(error => {
-        console.error('An error occurred while fetching the initial messages:', error);
-      });
+    // Load chat history from local storage
+    const savedChat = localStorage.getItem('chat');
+    if (savedChat) {
+      dispatch(addMessages(JSON.parse(savedChat)));
+    } else {
+      axios.post('http://localhost:5000/api/chat', { messages: [{ role: 'system', content: 'You are a helpful assistant.' }] })
+        .then(response => {
+          console.log('Initial messages:', response.data.messages);
+          dispatch(addMessages(response.data.messages)); // Dispatch the addMessages action with the correct type and payload
+          console.log('Current chat state:', chatState.messages);
+        })
+        .catch(error => {
+          console.error('An error occurred while fetching the initial messages:', error);
+        });
+    }
   }, []);
+
+  useEffect(() => {
+    // Save chat history to local storage whenever it changes
+    localStorage.setItem('chat', JSON.stringify(chatState.messages));
+  }, [chatState.messages]);
 
   const onSendMessage = () => {
     const messages = [...chatState.messages, { role: 'user', content: input }];
@@ -36,10 +47,16 @@ function Chat() {
     setInput('');
   };
 
+  const onClearChat = () => {
+    // Clear chat history from local storage and Redux store
+    localStorage.removeItem('chat');
+    dispatch(addMessages([]));
+  };
+
   return (
     <div className="flex flex-col h-full">
       <ChatList messages={chatState.messages} />
-      <ChatPanel onSendMessage={onSendMessage} input={input} setInput={setInput} />
+      <ChatPanel onSendMessage={onSendMessage} onClearChat={onClearChat} input={input} setInput={setInput} />
     </div>
   );
 }

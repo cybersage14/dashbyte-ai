@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-function ChatPanel({ onSendMessage, input, setInput }) {
+function ChatPanel({ onSendMessage, onClearChat, input, setInput }) {
   const inputRef = useRef();
 
   const handleSendMessage = () => {
@@ -11,6 +11,13 @@ function ChatPanel({ onSendMessage, input, setInput }) {
   return (
     <div className="border-t-2 border-gray-200 px-4 pt-2 mb-2 sm:mb-0">
       <div className="relative flex">
+        <button
+          type="button"
+          onClick={onClearChat}
+          className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-white bg-red-500 hover:bg-red-400 focus:outline-none mr-2"
+        >
+          Clear
+        </button>
         <input
           type="text"
           placeholder="Write something..."
