@@ -10,7 +10,7 @@ function Chat() {
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    axios.post('/api/chat', { messages: [] })
+    axios.post('http://localhost:5000/api/chat', { messages: [] })
       .then(response => {
         dispatch({ type: 'ADD_MESSAGES', messages: response.data.messages });
       })
@@ -20,7 +20,7 @@ function Chat() {
   }, [dispatch]);
 
   const handleSendMessage = () => {
-    axios.post('/api/chat', { messages: [...chatState.messages, { role: 'user', content: input }] })
+    axios.post('http://localhost:5000/api/chat', { messages: [...chatState.messages, { role: 'user', content: input }] })
       .then(response => {
         dispatch({ type: 'ADD_MESSAGES', messages: [{ role: 'user', content: input }, { role: 'ai', content: response.data.message }] });
         setInput('');
