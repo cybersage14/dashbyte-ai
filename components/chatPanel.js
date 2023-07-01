@@ -23,6 +23,7 @@ function ChatPanel({ onSendMessage, onClearChat, input, setInput }) {
           placeholder="Write something..."
           value={input}
           onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
           className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-full py-3"
           ref={inputRef}
         />

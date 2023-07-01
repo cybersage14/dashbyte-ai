@@ -48,10 +48,15 @@ function Chat() {
   };
 
   const onClearChat = () => {
-    // Clear chat history from local storage and Redux store
-    localStorage.removeItem('chat');
-    dispatch(addMessages([]));
+    const defaultMessages = [
+      { role: 'system', content: 'You are a helpful assistant.' },
+      { role: 'assistant', content: 'How may I assist you today?' },
+    ];
+  
+    localStorage.setItem('chat', JSON.stringify(defaultMessages));
+    dispatch(addMessages(defaultMessages));
   };
+  
 
   return (
     <div className="flex flex-col h-full">
