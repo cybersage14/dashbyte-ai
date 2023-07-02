@@ -34,12 +34,13 @@ function Chat() {
   }, [chatState.messages]);
 
   const onSendMessage = () => {
-    const messages = [...chatState.messages, { role: 'user', content: input }];
-    console.log('Updated messages:', messages);
-    axios.post('http://localhost:5000/api/chat', { messages })
+    const newMessage = { role: 'user', content: input };
+    console.log('Sending message:', newMessage);
+    axios.post('http://localhost:5000/api/chat', { messages: [newMessage] })
       .then(response => {
         console.log('Received response:', response.data);
-        dispatch(addMessages(response.data.messages)); // Dispatch the addMessages action with the correct type and payload
+        const messages = [...chatState.messages, ...response.data.messages];
+        dispatch(addMessages(messages)); // Dispatch the addMessages action with the updated messages array
       })
       .catch(error => {
         console.error('An error occurred while sending the message:', error);
@@ -48,15 +49,9 @@ function Chat() {
   };
 
   const onClearChat = () => {
-    const defaultMessages = [
-      { role: 'system', content: 'You are a helpful assistant.' },
-      { role: 'assistant', content: 'How may I assist you today?' },
-    ];
-  
-    localStorage.setItem('chat', JSON.stringify(defaultMessages));
-    dispatch(addMessages(defaultMessages));
+    localStorage.setItem('chat', JSON.stringify([]));
+    dispatch(addMessages([]));
   };
-  
 
   return (
     <div className="flex flex-col h-full">
