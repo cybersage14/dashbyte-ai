@@ -9,6 +9,8 @@ app.use(express.json());
 
 let conversation = [];
 
+//This route receives chat messages from the client, 
+//sends them to the OpenAI API, and returns the AI's response to the client.
 app.post('/api/chat', (req, res) => {
   conversation = [...conversation, ...req.body.messages];
   axios.post('https://api.openai.com/v1/chat/completions', {
@@ -29,6 +31,7 @@ app.post('/api/chat', (req, res) => {
     });
 });
 
+//This route clears the conversation history.
 app.post('/api/clearChat', (req, res) => {
   conversation = [];
   res.sendStatus(200);
