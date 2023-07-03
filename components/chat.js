@@ -1,8 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 import { addMessages, clearMessages } from '../redux/chatSlice';
+import { getAIMessage, clearChat } from '../lib/openai';
 import ChatPanel from './chatPanel';
 
 function Chat() {
@@ -16,7 +16,7 @@ function Chat() {
     if (savedChat) {
       dispatch(addMessages(JSON.parse(savedChat)));
     } else {
-      axios.post('http://localhost:5000/api/chat', { messages: [{ role: 'system', content: 'You are a helpful assistant, who specializes in helping user pick PC parts and build computers.' }] })
+      getAIMessage([{ role: 'system', content: 'You are a helpful assistant, who specializes in helping user pick PC parts and build computers.' }])
         .then(response => {
           dispatch(addMessages(response.data.messages));
         })
@@ -33,7 +33,7 @@ function Chat() {
   const onSendMessage = () => {
     const newMessage = { role: 'user', content: input };
     const messages = [...chatState.messages, newMessage];
-    axios.post('http://localhost:5000/api/chat', { messages: messages })
+    getAIMessage(messages)
       .then(response => {
         const newMessagesFromServer = response.data.messages.slice(chatState.messages.length);
         dispatch(addMessages(newMessagesFromServer));
@@ -45,7 +45,7 @@ function Chat() {
   };  
 
   const onClearChat = () => {
-    axios.post('http://localhost:5000/api/clearChat')
+    clearChat()
       .then(response => {
         localStorage.setItem('chat', JSON.stringify([]));
         dispatch(clearMessages());
