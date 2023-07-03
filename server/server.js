@@ -29,7 +29,11 @@ app.post('/api/chat', (req, res) => {
     });
 });
 
+app.post('/api/clearChat', (req, res) => {
+  conversation = [];
+  res.sendStatus(200);
+});
+
 app.listen(5000, () => {
   console.log('Server listening on port 5000');
 });
-

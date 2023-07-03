@@ -16,7 +16,7 @@ function Chat() {
     if (savedChat) {
       dispatch(addMessages(JSON.parse(savedChat)));
     } else {
-      axios.post('http://localhost:5000/api/chat', { messages: [{ role: 'system', content: 'You are a helpful assistant.' }] })
+      axios.post('http://localhost:5000/api/chat', { messages: [{ role: 'system', content: 'You are a helpful assistant, who specializes in helping user pick PC parts and build computers.' }] })
         .then(response => {
           dispatch(addMessages(response.data.messages));
         })
@@ -45,9 +45,16 @@ function Chat() {
   };  
 
   const onClearChat = () => {
-    localStorage.setItem('chat', JSON.stringify([]));
-    dispatch(clearMessages());
+    axios.post('http://localhost:5000/api/clearChat')
+      .then(response => {
+        localStorage.setItem('chat', JSON.stringify([]));
+        dispatch(clearMessages());
+      })
+      .catch(error => {
+        console.error('An error occurred while clearing the chat:', error);
+      });
   };
+  
 
   return (
     <div className="flex flex-col h-full">
