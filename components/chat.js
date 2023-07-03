@@ -2,16 +2,17 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { addMessages } from '../redux/chatSlice';
-import ChatInput from './chatInput';
-import ChatDisplay from './chatDisplay';
+import { addMessages, clearMessages } from '../redux/chatSlice';
+import ChatPanel from './chatPanel';
 
 function Chat() {
   const chatState = useSelector(state => state.chat);
   const dispatch = useDispatch();
+  const [input, setInput] = useState('');
 
   useEffect(() => {
     const savedChat = localStorage.getItem('chat');
+    dispatch(clearMessages());
     if (savedChat) {
       dispatch(addMessages(JSON.parse(savedChat)));
     } else {
@@ -29,7 +30,7 @@ function Chat() {
     localStorage.setItem('chat', JSON.stringify(chatState.messages));
   }, [chatState.messages]);
 
-  const onSendMessage = (input) => {
+  const onSendMessage = () => {
     const newMessage = { role: 'user', content: input };
     const messages = [...chatState.messages, newMessage];
     axios.post('http://localhost:5000/api/chat', { messages: messages })
@@ -40,17 +41,17 @@ function Chat() {
       .catch(error => {
         console.error('An error occurred while sending the message:', error);
       });
+    setInput('');
   };
 
   const onClearChat = () => {
     localStorage.setItem('chat', JSON.stringify([]));
-    dispatch(addMessages([]));
+    dispatch(clearMessages());
   };
 
   return (
     <div className="flex flex-col h-full">
-      <ChatDisplay messages={chatState.messages} />
-      <ChatInput onSendMessage={onSendMessage} onClearChat={onClearChat} />
+      <ChatPanel onSendMessage={onSendMessage} onClearChat={onClearChat} input={input} setInput={setInput} messages={chatState.messages} />
     </div>
   );
 }

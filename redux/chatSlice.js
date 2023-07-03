@@ -13,9 +13,12 @@ const chatSlice = createSlice({
       state.messages = [...state.messages, ...action.payload];
       console.log('Updated state:', state);
     },
+    clearMessages: (state) => {
+      state.messages = [];
+    },
   },
 });
 
-export const { addMessages } = chatSlice.actions;
+export const { addMessages, clearMessages } = chatSlice.actions;
 
 export default chatSlice.reducer;
