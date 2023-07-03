@@ -1,4 +1,4 @@
-import getAiMessage from '../lib/openai';
+import { getAiMessage } from '../lib/openai';
 const axios = require('axios');
 
 jest.mock('axios');
