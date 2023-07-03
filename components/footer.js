@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="fixed inset-x-0 bottom-0 bg-gradient-to-r from-green-400 to-blue-500 text-white py-8 px-4 text-center">
+    <footer className="inset-x-0 bottom-0 bg-gradient-to-r from-green-400 to-blue-500 text-white py-8 px-4 text-center">
       <p className="mb-4">
         &copy; {new Date().getFullYear()} Dashbyte AI. All rights reserved.
       </p>

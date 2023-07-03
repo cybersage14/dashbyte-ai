@@ -35,14 +35,14 @@ function Chat() {
     const messages = [...chatState.messages, newMessage];
     axios.post('http://localhost:5000/api/chat', { messages: messages })
       .then(response => {
-        const updatedMessages = [...chatState.messages, ...response.data.messages];
-        dispatch(addMessages(updatedMessages));
+        const newMessagesFromServer = response.data.messages.slice(chatState.messages.length);
+        dispatch(addMessages(newMessagesFromServer));
       })
       .catch(error => {
         console.error('An error occurred while sending the message:', error);
       });
     setInput('');
-  };
+  };  
 
   const onClearChat = () => {
     localStorage.setItem('chat', JSON.stringify([]));

@@ -5,8 +5,10 @@ import Chat from '../components/chat';
 const Page = () => {
   return (
     <Layout>
-      <div className="w-full h-screen pt-100 mt-60">
-        <Chat />
+      <div className="flex flex-col min-h-screen">
+        <div className="flex-grow">
+          <Chat />
+        </div>
       </div>
     </Layout>
   );
