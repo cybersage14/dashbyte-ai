@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const chatSlice = createSlice({
+const initialState = {
+  messages: [],
+};
+
+const chatSlice = createSlice({
   name: 'chat',
-  initialState: {
-    messages: [],
-  },
+  initialState,
   reducers: {
     addMessages: (state, action) => {
       console.log('Dispatching addMessages action with payload:', action.payload);
-      state.messages = action.payload;
+      state.messages = [...state.messages, ...action.payload];
       console.log('Updated state:', state);
     },
   },
