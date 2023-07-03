@@ -1,3 +1,4 @@
+import React from 'react';
 import { Provider } from 'react-redux';
 import { wrapper } from '../redux/store';
 import '../styles/globals.css';
