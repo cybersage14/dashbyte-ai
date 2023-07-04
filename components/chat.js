@@ -49,8 +49,9 @@ function Chat() {
   };
 
   const onClearChat = () => {
-    localStorage.setItem('chat', JSON.stringify([]));
+    localStorage.setItem('chat', JSON.stringify([{ role: 'system', content: 'Start of the conversation.' }]));
     dispatch(clearMessages());
+    dispatch(addMessages([{ role: 'system', content: 'Start of the conversation.' }]));
   };
 
   return (
