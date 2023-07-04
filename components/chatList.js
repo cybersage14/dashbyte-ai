@@ -10,8 +10,10 @@ function ChatList({ messages }) {
     <div className="space-y-4 bg-gray-200 h-96 overflow-auto p-4">
       {messages.length > 0 ? messages.map((message, index) => (
         message.role !== 'system' && (
-        <div key={index} className={`max-w-xs mx-2 ${message.role === 'user' ? 'ml-auto bg-user-blue text-white rounded-br-none' : 'mr-auto bg-ai-cyan text-white rounded-bl-none'} rounded-md p-2`}>
-          {message.content}
+        <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} mx-2`}>
+          <div className={`inline-block ${message.role === 'user' ? 'bg-user-blue text-white rounded-br-none' : 'bg-ai-cyan text-white rounded-bl-none'} rounded-md p-2`}>
+            {message.content}
+          </div>
         </div>
         )
       )) : (
