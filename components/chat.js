@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addMessages, clearMessages } from '../redux/chatSlice';
 import { getAiMessage, clearChat } from '../lib/openai';
 import ChatPanel from './chatPanel';
+console.log('OPENAI_API_KEY in chat.js:', process.env.OPENAI_API_KEY);
 
 //This is a React component that handles the chat interface. 
 //It uses the Redux state for managing chat messages and interacts with the OpenAI API
@@ -34,29 +35,23 @@ function Chat() {
 
   const onSendMessage = () => {
     const newMessage = { role: 'user', content: input };
+    dispatch(addMessages([newMessage])); // Dispatch the new message to the Redux store
     const messages = [...chatState.messages, newMessage];
     getAiMessage(messages)
       .then(response => {
-        const newMessagesFromServer = response.data.messages.slice(chatState.messages.length);
+        const newMessagesFromServer = response.data.choices.map(choice => choice.message);
         dispatch(addMessages(newMessagesFromServer));
       })
       .catch(error => {
         console.error('An error occurred while sending the message:', error);
       });
     setInput('');
-  };  
+  };
 
   const onClearChat = () => {
-    clearChat()
-      .then(response => {
-        localStorage.setItem('chat', JSON.stringify([]));
-        dispatch(clearMessages());
-      })
-      .catch(error => {
-        console.error('An error occurred while clearing the chat:', error);
-      });
+    localStorage.setItem('chat', JSON.stringify([]));
+    dispatch(clearMessages());
   };
-  
 
   return (
     <div className="flex flex-col h-full">
