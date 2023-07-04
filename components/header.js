@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 function Header() {
   return (
-    <nav className="bg-gradient-to-r from-green-400 to-blue-500 p-4 flex justify-between items-center">
+  <nav className="bg-gradient-to-r from-ai-cyan-solid to-user-blue-solid p-4 flex justify-between items-center">
       <Link href="/">
         <div className="bg-black p-1 rounded">
           <img src="/images/4k-LogoTransparent.png" alt="Logo" className="h-8" />
