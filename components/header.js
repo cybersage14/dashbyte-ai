@@ -3,10 +3,10 @@ import Link from 'next/link';
 
 function Header() {
   return (
-  <nav className="bg-gradient-to-r from-ai-cyan-solid to-user-blue-solid p-4 flex justify-between items-center">
+  <nav className="bg-transparent p-4 flex justify-between items-center">
       <Link href="/">
         <div className="bg-black p-1 rounded">
-          <img src="/images/4k-LogoTransparent.png" alt="Logo" className="h-8" />
+          <img src="/images/4k_Logo_Only_FAVICON.png" alt="Logo" className="h-8" />
         </div>
       </Link>
       <ul className="flex space-x-4">
