@@ -25,3 +25,10 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.bg-logo {
+  background-image: url('/images/4k_Logo_Only_FAVICON.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}

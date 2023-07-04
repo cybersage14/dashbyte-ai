@@ -4,7 +4,7 @@ import Chat from '../components/chat';
 
 const Page = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-black">
+    <div className="flex flex-col min-h-screen bg-black bg-logo">
       <Header />
       <div className="flex-grow flex items-center justify-center">
         <Chat />
