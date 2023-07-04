@@ -11,7 +11,7 @@ function ChatList({ messages }) {
       {messages.length > 0 ? messages.map((message, index) => (
         message.role !== 'system' && (
         <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} mx-2`}>
-          <div className={`inline-block ${message.role === 'user' ? 'bg-user-blue text-white rounded-br-none' : 'bg-ai-cyan text-white rounded-bl-none'} rounded-md p-2`}>
+          <div className={`inline-block ${message.role === 'user' ? 'bg-user-blue text-white rounded-br-none' : 'bg-middle-gradient text-white rounded-bl-none'} rounded-md p-2`}>
             {message.content}
           </div>
         </div>

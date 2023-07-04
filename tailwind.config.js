@@ -12,6 +12,7 @@ module.exports = {
         'ai-cyan': 'rgba(0, 212, 197, 0.5)', // 50% opacity
         'user-blue-solid': '#558AFF', // No opacity
         'ai-cyan-solid': '#00D4C5', // No opacity
+        'middle-gradient': '#2BAFE2',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

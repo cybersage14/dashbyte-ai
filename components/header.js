@@ -10,7 +10,7 @@ function Header() {
         </div>
       </Link>
       <ul className="flex space-x-4">
-        <li><Link href="/pc-builder" className="text-white">PC Builder</Link></li>
+        <li><Link href="/pcBuilder" className="text-white">PC Builder</Link></li>
         <li><Link href="/services" className="text-white">Services</Link></li>
         <li><Link href="/about" className="text-white">About</Link></li>
         <li><Link href="/contact" className="text-white">Contact</Link></li>
