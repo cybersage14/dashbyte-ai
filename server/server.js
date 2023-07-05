@@ -1,59 +1,38 @@
-require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const cors = require('cors');
-const axios = require('axios');
-const { connectToMongoDB, getDb } = require('./db'); // Make sure to import getDb
+const { MongoClient } = require('mongodb');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
 
-connectToMongoDB().then(() => {
-  app.listen(5000, () => {
-    console.log('Server listening on port 5000');
-  });
-}).catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
-});
+let _db;
 
-let conversation = [];
+async function connectToDb() {
+  const client = new MongoClient(process.env.MONGO_URI, { useUnifiedTopology: true });
+  await client.connect();
+  _db = client.db('user_benchmarks');
+  console.log('Connected to MongoDB');
+}
 
-app.post('/api/chat', (req, res) => {
-  console.log('Received request:', req.body);
-  conversation = [...conversation, ...req.body.messages];
-  axios.post('https://api.openai.com/v1/chat/completions', {
-    model: 'gpt-3.5-turbo',
-    messages: conversation
-  }, {
-    headers: {
-      'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-    }
-  })
-    .then(response => {
-      console.log('Response from OpenAI API:', response.data);
-      conversation = [...conversation, response.data.choices[0].message];
-      res.json({ messages: conversation });
-    })
-    .catch(error => {
-      console.error('An error occurred while processing the chat:', error);
-      res.status(500).json({ error: 'An error occurred while processing the chat.' });
-    });
-});
-
-app.post('/api/clearChat', (req, res) => {
-  conversation = [];
-  res.sendStatus(200);
-});
+function getDb() {
+  console.log('Getting DB'); // Log a message every time getDb is called
+  return _db;
+}
 
 app.get('/api/parts/:partType', async (req, res) => {
   try {
     const partType = req.params.partType;
     const db = getDb();
-    console.log(`Fetching parts from collection: ${partType}_UserBenchmarks`); // Add this line
+    console.log(`Fetching parts from collection: ${partType}_UserBenchmarks`);
     const parts = await db.collection(`${partType}_UserBenchmarks`).find().toArray();
     res.json(parts);
   } catch (err) {
-    console.error(`Failed to fetch parts: ${err}`);
+    console.error(`Failed to fetch parts:`, err); // Log the entire error object
     res.status(500).json({ error: 'Failed to fetch parts.' });
   }
+});
+
+app.listen(5000, () => {
+  console.log('Server listening on port 5000');
+  connectToDb();
 });
