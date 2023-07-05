@@ -2,7 +2,7 @@ require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-const { connectToMongoDB } = require('./db');
+const { connectToMongoDB, getDb } = require('./db'); // Make sure to import getDb
 
 const app = express();
 app.use(cors());
@@ -49,6 +49,7 @@ app.get('/api/parts/:partType', async (req, res) => {
   try {
     const partType = req.params.partType;
     const db = getDb();
+    console.log(`Fetching parts from collection: ${partType}_UserBenchmarks`); // Add this line
     const parts = await db.collection(`${partType}_UserBenchmarks`).find().toArray();
     res.json(parts);
   } catch (err) {
