@@ -8,6 +8,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+connectToMongoDB().then(() => {
+  app.listen(5000, () => {
+    console.log('Server listening on port 5000');
+  });
+}).catch(err => {
+  console.error('Failed to connect to MongoDB:', err);
+});
+
 let conversation = [];
 
 app.post('/api/chat', (req, res) => {
@@ -37,10 +45,14 @@ app.post('/api/clearChat', (req, res) => {
   res.sendStatus(200);
 });
 
-connectToMongoDB().then(() => {
-  app.listen(5000, () => {
-    console.log('Server listening on port 5000');
-  });
-}).catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
+app.get('/api/parts/:partType', async (req, res) => {
+  try {
+    const partType = req.params.partType;
+    // Query the parts from the MongoDB database...
+    const parts = await queryPartsFromDatabase(partType);
+    res.json(parts);
+  } catch (err) {
+    console.error(`Failed to fetch parts: ${err}`);
+    res.status(500).json({ error: 'Failed to fetch parts.' });
+  }
 });
