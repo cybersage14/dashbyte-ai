@@ -48,8 +48,8 @@ app.post('/api/clearChat', (req, res) => {
 app.get('/api/parts/:partType', async (req, res) => {
   try {
     const partType = req.params.partType;
-    // Query the parts from the MongoDB database...
-    const parts = await queryPartsFromDatabase(partType);
+    const db = getDb();
+    const parts = await db.collection(`${partType}_UserBenchmarks`).find().toArray();
     res.json(parts);
   } catch (err) {
     console.error(`Failed to fetch parts: ${err}`);

@@ -18,4 +18,4 @@ const connectToMongoDB = async () => {
   }
 };
 
-module.exports = { connectToMongoDB, getDb, client };
+module.exports = { connectToMongoDB, getDb };
