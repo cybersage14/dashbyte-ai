@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addMessages, clearMessages } from '../redux/chatSlice';
 import { getAiMessage, clearChat } from '../lib/openai';
 import ChatPanel from './chatPanel';
-console.log('OPENAI_API_KEY in chat.js:', process.env.OPENAI_API_KEY);
 
 //This is a React component that handles the chat interface. 
 //It uses the Redux state for managing chat messages and interacts with the OpenAI API
