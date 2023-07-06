@@ -1,4 +1,5 @@
-require('dotenv').config({ path: '.env.local' });
+require('dotenv').config({ path: '../.env.local' });
+console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY);
 
 const express = require('express');
 const partsRouter = require('./routes/parts');
