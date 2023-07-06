@@ -1,25 +1,36 @@
-require('dotenv').config();
-
 const express = require('express');
-const cors = require('cors');
-
-const { connectToMongoDB, getDb } = require('./db'); // Import the new db module
-const partsRouter = require('./routes/parts'); // Import the parts router
+const { MongoClient } = require('mongodb');
+const partsRouter = require('./routes/parts');
 
 const app = express();
-app.use(cors());
 
-app.set('db', getDb); // Set the db object in your Express app
+const uri = "mongodb://127.0.0.1:27017";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.use('/api/parts', partsRouter); // Use the parts router for requests to /api/parts/...
+let db;
 
-connectToMongoDB().then(() => { // Use the connectToMongoDB function from the db module
-  app.listen(5000, () => {
-    console.log('Server listening on port 5000');
-  });
-});
+const getDb = () => db;
 
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl}`);
-  next();
+const connectToMongoDB = async () => {
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+    db = client.db('user_benchmarks');
+    app.set('db', db);
+    app.listen(5000, () => console.log('Server listening on port 5000'));
+  } catch (err) {
+    console.error('An error occurred while connecting to MongoDB:', err);
+    process.exit(1);
+  }
+};
+
+app.use('/api/parts', partsRouter);
+
+connectToMongoDB();
+
+// Shutdown function
+process.on('SIGINT', async () => {
+  console.log('Gracefully shutting down...');
+  await client.close();
+  process.exit(0);
 });

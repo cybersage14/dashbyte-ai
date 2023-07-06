@@ -1,4 +1,3 @@
-// db.js
 const { MongoClient } = require('mongodb');
 
 const uri = process.env.MONGO_URI;
@@ -13,10 +12,11 @@ const connectToMongoDB = async () => {
     db = client.db('user_benchmarks'); // Connect to the 'user_benchmarks' database
     console.log('Connected to the user_benchmarks database');
   } catch (err) {
-    console.error('An error occurred while connecting to MongoDB:', err);
+    console.error('An error occurred while connecting to MongoDB:', err.stack);
     process.exit(1); // Exit the application if there's an error
   }
 };
+
 
 const getDb = () => {
   if (!db) {
