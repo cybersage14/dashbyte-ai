@@ -34,7 +34,8 @@ app.set('db', getDb); // Set the db object in your Express app
 
 app.use('/api/parts', partsRouter); // Use the parts router for requests to /api/parts/...
 
-app.listen(5000, () => {
-  console.log('Server listening on port 5000');
-  connectToDb();
+connectToDb().then(() => {
+  app.listen(5000, () => {
+    console.log('Server listening on port 5000');
+  });
 });
