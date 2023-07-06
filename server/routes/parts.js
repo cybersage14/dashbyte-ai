@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-// Import the model
-const Part = require('../models/Part');
-
-// Route to get all parts
-router.get('/', async (req, res) => {
+router.get('/:part', async (req, res) => {
+  const db = req.app.get('db');
   try {
-    const parts = await Part.find();
+    const collection = db.collection(`${req.params.part.toUpperCase()}_UserBenchmarks`);
+    const parts = await collection.find().toArray();
     res.json(parts);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error('An error occurred while fetching parts:', err);
+    res.status(500).json({ message: 'An error occurred while processing your request.' });
   }
 });
 

@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 
+const partsRouter = require('./routes/parts'); // Import the parts router
+
 const app = express();
 app.use(cors());
 
@@ -28,19 +30,9 @@ function getDb() {
   return _db;
 }
 
-app.get('/api/parts/:partType', async (req, res) => {
-  try {
-    const partType = req.params.partType;
-    const db = getDb();
-    console.log(`Fetching parts from collection: ${partType}_UserBenchmarks`);
-    const parts = await db.collection(`${partType}_UserBenchmarks`).find().toArray();
-    console.log(`Fetched ${parts.length} parts from collection: ${partType}_UserBenchmarks`);
-    res.json(parts);
-  } catch (err) {
-    console.error(`Failed to fetch parts from collection: ${req.params.partType}_UserBenchmarks`, err); // Log the entire error object
-    res.status(500).json({ error: 'Failed to fetch parts.' });
-  }
-});
+app.set('db', getDb); // Set the db object in your Express app
+
+app.use('/api/parts', partsRouter); // Use the parts router for requests to /api/parts/...
 
 app.listen(5000, () => {
   console.log('Server listening on port 5000');
