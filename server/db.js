@@ -1,11 +1,10 @@
+// db.js
 const { MongoClient } = require('mongodb');
 
-const uri = "mongodb://127.0.0.1:27017";
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let db;
-
-const getDb = () => db;
 
 const connectToMongoDB = async () => {
   try {
@@ -19,5 +18,12 @@ const connectToMongoDB = async () => {
   }
 };
 
+const getDb = () => {
+  if (!db) {
+    console.error('Database not initialized');
+    process.exit(1); // Exit the application if there's an error
+  }
+  return db;
+};
 
 module.exports = { connectToMongoDB, getDb };

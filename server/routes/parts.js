@@ -11,9 +11,9 @@ router.get('/:part', async (req, res) => {
     const parts = await collection.find().toArray();
     res.json(parts);
   } catch (err) {
-    console.error('An error occurred while fetching parts:', err);
-    res.status(500).json({ message: 'An error occurred while processing your request.' });
-  }
+    console.error('An error occurred while fetching parts:', err.stack);
+    res.status(500).json({ message: 'An error occurred while processing your request.', error: err.stack });
+  }  
 });
 
 module.exports = router;
