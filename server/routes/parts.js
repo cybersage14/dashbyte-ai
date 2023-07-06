@@ -4,7 +4,10 @@ const router = express.Router();
 router.get('/:part', async (req, res) => {
   const db = req.app.get('db');
   try {
-    const collection = db.collection(`${req.params.part.toUpperCase()}_UserBenchmarks`);
+    const partType = req.params.part.toUpperCase();
+    const collectionName = `${partType}_UserBenchmarks`;
+    console.log(`Fetching parts of type ${partType} from collection ${collectionName}`);
+    const collection = db.collection(collectionName);
     const parts = await collection.find().toArray();
     res.json(parts);
   } catch (err) {
