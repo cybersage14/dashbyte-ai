@@ -20,7 +20,8 @@ const connectToMongoDB = async () => {
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    console.log("Pinged your deployment.");
+    console.log("You successfully connected to MongoDB!");
     db = client.db('user_benchmarks');
     console.log('Connected to the user_benchmarks database');
   } catch (err) {

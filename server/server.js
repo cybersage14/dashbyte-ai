@@ -4,8 +4,6 @@ const express = require('express');
 const partsRouter = require('./routes/parts');
 const { connectToMongoDB, getDb } = require('./db');
 
-console.log('MONGO_URI:', process.env.MONGO_URI); // Log MONGO_URI
-
 const app = express();
 
 app.use('/api/parts', partsRouter);
