@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addMessages, clearMessages } from '../redux/chatSlice';
-import { getAiMessage, clearChat } from '../lib/openai';
+import { getAiMessage} from '../server/openai';
 import ChatPanel from './chatPanel';
 
 //This is a React component that handles the chat interface. 

@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '.env.local' }); // Load environment variables
+require('dotenv').config({ path: '.env.local' });
 
 const express = require('express');
 const partsRouter = require('./routes/parts');
