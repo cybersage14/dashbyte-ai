@@ -1,4 +1,4 @@
-const getAiMessage = require('../openai');
+const { getAiMessage } = require('../openai');
 
 module.exports = (app) => {
   app.post('/chat', async (req, res) => {

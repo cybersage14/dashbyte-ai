@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addMessages, clearMessages } from '../redux/chatSlice';
-import { getAiMessage} from '../server/openai';
+import axios from 'axios'; // Add this line
 import ChatPanel from './chatPanel';
 
 //This is a React component that handles the chat interface. 
@@ -52,6 +52,26 @@ function Chat() {
     dispatch(clearMessages());
     dispatch(addMessages([{ role: 'system', content: 'Start the conversation by typing a message below...' }]));
   };
+
+  // This function sends a POST request to the server to get a response from the AI model.
+  // It takes an array of messages as input, where each message is an object with a 'role' and 'content' property.
+  // It returns a promise that resolves to the response from the server.
+  async function getAiMessage(messages) {
+    try {
+      const response = await axios.post(
+        '/api/chat', // Update this to the correct endpoint if necessary
+        {
+          messages
+        }
+      );
+
+      // Return the entire response object
+      return response;
+    } catch (error) {
+      console.error('An error occurred while getting a message from the server:', error);
+      throw error;
+    }
+  }
 
   return (
     <div className="flex flex-col h-full bg-gray-800 bg-opacity-50">

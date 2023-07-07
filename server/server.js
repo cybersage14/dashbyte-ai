@@ -2,7 +2,7 @@ const express = require('express');
 const partsRouter = require('./routes/parts');
 const { connectToMongoDB, getDb } = require('./db');
 const { initializeOpenAI } = require('./openai');
-const { OPENAI_API_KEY, MONGO_URI } = require('../config'); // Import OPENAI_API_KEY and MONGO_URI from config.js
+const { OPENAI_API_KEY, MONGO_URI } = require('../config');
 
 console.log('OPENAI_API_KEY:', OPENAI_API_KEY);
 console.log('MONGO_URI:', MONGO_URI);
