@@ -1,14 +1,16 @@
-require('dotenv').config({ path: '.env.local' });
-
 const axios = require('axios');
 
-const openai = axios.create({
-  baseURL: 'https://api.openai.com/v1',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-  }
-});
+let openai;
+
+const initializeOpenAI = (apiKey) => {
+  openai = axios.create({
+    baseURL: 'https://api.openai.com/v1',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    }
+  });
+};
 
 //This function formats chat messages for interaction with the OpenAI API.
 function formatMessages(chatMessages) {
@@ -47,4 +49,4 @@ async function getAiMessage(messages) {
   }
 }
 
-module.exports = { formatMessages, extractMessage, getAiMessage };
+module.exports = { initializeOpenAI, formatMessages, extractMessage, getAiMessage };
