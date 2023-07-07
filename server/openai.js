@@ -1,13 +1,14 @@
 const axios = require('axios');
+const { OPENAI_API_KEY } = require('../config');
 
 let openai;
 
-const initializeOpenAI = (apiKey) => {
+const initializeOpenAI = () => {
   openai = axios.create({
     baseURL: 'https://api.openai.com/v1',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
+      'Authorization': `Bearer ${OPENAI_API_KEY}`
     }
   });
 };
