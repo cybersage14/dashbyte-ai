@@ -1,7 +1,4 @@
-const path = require('path');
-require('dotenv').config({ path: __dirname + '/../../.env.local' });
-
-console.log(process.env.OPENAI_API_KEY);
+require('dotenv').config({ path: '.env.local' });
 
 const axios = require('axios');
 
@@ -12,7 +9,6 @@ const openai = axios.create({
     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
   }
 });
-console.log('Authorization:', openai.defaults.headers['Authorization']);
 
 //This function formats chat messages for interaction with the OpenAI API.
 function formatMessages(chatMessages) {
@@ -34,6 +30,7 @@ function extractMessage(response) {
 //This function sends a POST request to the OpenAI API to get a response from the AI model.
 async function getAiMessage(messages) {
   try {
+    console.log('Headers:', openai.defaults.headers); // Add this line
     const response = await openai.post(
       '/chat/completions',
       {
