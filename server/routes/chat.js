@@ -13,13 +13,19 @@ module.exports = (app) => {
       console.log('AI message:', aiMessage); // Add logging
       res.json({ message: aiMessage });
     } catch (error) {
-      console.error('An error occurred while creating chat with OpenAI API:', error);
+      let errorMessage = 'An error occurred while processing your request.';
       if (error.response) {
-        console.error('Response data:', error.response.data);
-        console.error('Response status:', error.response.status);
-        console.error('Response headers:', error.response.headers);
+        switch (error.response.status) {
+          case 400:
+            errorMessage = 'Bad request.';
+            break;
+          case 401:
+            errorMessage = 'Unauthorized.';
+            break;
+          // Add more cases as needed
+        }
       }
-      res.status(500).json({ message: 'An error occurred while processing your request.', error: error.message });
-    }
+      res.status(500).json({ message: errorMessage, error: error.message });
+    }    
   });
 };

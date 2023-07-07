@@ -1,13 +1,14 @@
 const axios = require('axios');
+const { OPENAI_API_KEY } = require('../config');
 
 let openai;
 
-const initializeOpenAI = (apiKey) => {
+const initializeOpenAI = () => {
   openai = axios.create({
     baseURL: 'https://api.openai.com/v1',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
+      'Authorization': `Bearer ${OPENAI_API_KEY}`
     }
   });
 };
@@ -29,7 +30,9 @@ function extractMessage(response) {
   return response.data.choices[0].message.content;
 }
 
-//This function sends a POST request to the OpenAI API to get a response from the AI model.
+// This function sends a POST request to the OpenAI API to get a response from the AI model.
+// It takes an array of messages as input, where each message is an object with a 'role' and 'content' property.
+// It returns a promise that resolves to the response from the OpenAI API.
 async function getAiMessage(messages) {
   try {
     console.log('Headers:', openai.defaults.headers); // Add this line

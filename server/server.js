@@ -1,23 +1,23 @@
-require('dotenv').config({ path: '.env.local' });
-
-console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY);
-
 const express = require('express');
 const partsRouter = require('./routes/parts');
 const { connectToMongoDB, getDb } = require('./db');
 const { initializeOpenAI } = require('./openai');
+const { OPENAI_API_KEY, MONGO_URI } = require('../config'); // Import OPENAI_API_KEY and MONGO_URI from config.js
+
+console.log('OPENAI_API_KEY:', OPENAI_API_KEY);
+console.log('MONGO_URI:', MONGO_URI);
 
 const app = express();
 
 app.use('/api/parts', partsRouter);
 
-initializeOpenAI(process.env.OPENAI_API_KEY);
+initializeOpenAI(OPENAI_API_KEY);
 
-let client; // Add this line
+let client;
 
-connectToMongoDB(process.env.MONGO_URI)
-  .then((mongoClient) => { // Modify this line
-    client = mongoClient; // Add this line
+connectToMongoDB(MONGO_URI)
+  .then((mongoClient) => {
+    client = mongoClient;
     const db = getDb();
     app.set('db', db);
     app.listen(5000, () => console.log('Server listening on port 5000'));
@@ -30,7 +30,7 @@ connectToMongoDB(process.env.MONGO_URI)
 // Shutdown function
 process.on('SIGINT', async () => {
   console.log('Gracefully shutting down...');
-  if (client) { // Add this line
+  if (client) {
     await client.close();
   }
   process.exit(0);
