@@ -1,3 +1,4 @@
+// Desc: Shutdown the server and close the database connection
 const shutdown = (server, client) => {
     process.on('SIGINT', async () => {
       console.log('Server is shutting down...');

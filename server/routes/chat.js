@@ -1,31 +1,29 @@
+const express = require('express');
 const { getAiMessage } = require('../openai');
+const { saveChat } = require('../db');
+const { v4: uuidv4 } = require('uuid');
 
-module.exports = (app) => {
-  app.post('/chat', async (req, res) => {
-    const chatMessages = req.body.messages;
-    const context = req.body.context;
-    const selectedParts = req.body.selectedParts;
+const router = express.Router();
 
-    console.log('Request body:', req.body); // Add logging
+router.post('/', async (req, res) => {
+  try {
+    const messages = req.body.messages;
+    const userMessage = messages[messages.length - 1];
 
-    try {
-      const aiMessage = await getAiMessage(chatMessages, context, selectedParts);
-      console.log('AI message:', aiMessage); // Add logging
-      res.json({ message: aiMessage });
-    } catch (error) {
-      let errorMessage = 'An error occurred while processing your request.';
-      if (error.response) {
-        switch (error.response.status) {
-          case 400:
-            errorMessage = 'Bad request.';
-            break;
-          case 401:
-            errorMessage = 'Unauthorized.';
-            break;
-          // Add more cases as needed
-        }
-      }
-      res.status(500).json({ message: errorMessage, error: error.message });
-    }    
-  });
-};
+    const aiMessageContent = await getAiMessage(userMessage.content);
+    const aiMessage = { role: 'assistant', content: aiMessageContent };
+
+    const chat = {
+      _id: uuidv4(),
+      messages: [...messages, aiMessage],
+    };
+
+    await saveChat(chat);
+    res.json(chat);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to process chat message' });
+  }
+});
+
+module.exports = router;

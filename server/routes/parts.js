@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+// GET /api/parts/:part
 router.get('/:part', async (req, res) => {
   const db = req.app.get('db');
   try {

@@ -1,20 +1,24 @@
 const express = require('express');
 const partsRouter = require('./routes/parts');
+const chatRouter = require('./routes/chat');
 const { connectToMongoDB, getDb } = require('./db');
 const { initializeOpenAI } = require('./openai');
 const { OPENAI_API_KEY, MONGO_URI } = require('../config');
 
-console.log('OPENAI_API_KEY:', OPENAI_API_KEY);
-console.log('MONGO_URI:', MONGO_URI);
-
+// Create Express app
 const app = express();
 
-app.use('/api/parts', partsRouter);
-
+// Middleware
 initializeOpenAI(OPENAI_API_KEY);
 
+// Routes
+app.use('/api/parts', partsRouter);
+app.use('/api/chat', chatRouter);
+
+// Connect to MongoDB and start server
 let client;
 
+// Connect to MongoDB
 connectToMongoDB(MONGO_URI)
   .then((mongoClient) => {
     client = mongoClient;

@@ -1,8 +1,10 @@
 const axios = require('axios');
 const { OPENAI_API_KEY } = require('../config');
 
+// This variable will be initialized in the initializeOpenAI function below.
 let openai;
 
+// This function initializes the OpenAI API client.
 const initializeOpenAI = () => {
   openai = axios.create({
     baseURL: 'https://api.openai.com/v1',
@@ -13,7 +15,7 @@ const initializeOpenAI = () => {
   });
 };
 
-//This function formats chat messages for interaction with the OpenAI API.
+// This function formats chat messages for interaction with the OpenAI API.
 function formatMessages(chatMessages) {
   let messages = chatMessages.map(message => ({ role: message.role, content: message.content }));
 
@@ -25,7 +27,7 @@ function formatMessages(chatMessages) {
   return messages;
 }
 
-//This function extracts the AI's message from the OpenAI API response.
+// This function extracts the AI's message from the OpenAI API response.
 function extractMessage(response) {
   return response.data.choices[0].message.content;
 }
@@ -52,4 +54,5 @@ async function getAiMessage(messages) {
   }
 }
 
+// Export the functions
 module.exports = { initializeOpenAI, formatMessages, extractMessage, getAiMessage };
