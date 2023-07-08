@@ -12,7 +12,6 @@ function Chat() {
   const chatState = useSelector(state => state.chat);  // Get the chat state from the Redux store
   const dispatch = useDispatch();  // Get the dispatch function from the Redux store
   const [input, setInput] = useState('');  // Store the user's input in the component's state
-  const [chatId, setChatId] = useState(null);  // Store the chatId in the component's state
 
   // This function loads the chat history from the server when the component is first rendered
   useEffect(() => {
@@ -23,7 +22,6 @@ function Chat() {
     } else {
       getAiMessage([{ role: 'system', content: 'You are a helpful assistant, who specializes in helping user pick PC parts and build computers.' }])
         .then(response => {
-          setChatId(response.data._id);  // Update the chatId when you receive a response from the server
           dispatch(addMessages(response.data.messages));
         })
         .catch(error => {
