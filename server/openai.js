@@ -49,8 +49,11 @@ async function getAiMessage(messages) {
       }
     );
 
-    // Return the entire response object
-    return response;
+    // Extract the content of the AI's message from the response
+    const aiMessageContent = response.data.choices[0].message.content;
+
+    // Return the content of the AI's message
+    return aiMessageContent;
   } catch (error) {
     console.error('An error occurred while getting a message from the OpenAI API:', error);
     throw error;

@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 
 module.exports = {
-  // No need to expose environment variables to the browser
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:5000/api/:path*', // Proxy to your Express server
+      },
+    ];
+  },
 };
