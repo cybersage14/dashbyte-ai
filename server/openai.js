@@ -1,6 +1,8 @@
 const axios = require('axios');
 const { OPENAI_API_KEY } = require('../config');
 
+console.log('OPENAI_API_KEY:', OPENAI_API_KEY);
+
 // This variable will be initialized in the initializeOpenAI function below.
 let openai;
 
@@ -14,6 +16,9 @@ const initializeOpenAI = () => {
     }
   });
 };
+
+// Call the function here to initialize 'openai'
+initializeOpenAI();
 
 // This function formats chat messages for interaction with the OpenAI API.
 function formatMessages(chatMessages) {

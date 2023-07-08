@@ -42,17 +42,18 @@ function Chat() {
     const newMessage = { role: 'user', content: input };
     dispatch(addMessages([newMessage])); // Dispatch the new message to the Redux store
     const messages = [...chatState.messages, newMessage];
-    getAiMessage(messages)
-    .then(response => {
-        setChatId(response.data._id);  // Update the chatId when you receive a response from the server
-        const newMessagesFromServer = response.data.choices.map(choice => choice.message);
+
+    // Make a POST request to your own server
+    axios.post('/api/chat', { messages })
+      .then(response => {
+        const newMessagesFromServer = response.data.messages.map(message => ({ role: message.role, content: message.content }));
         dispatch(addMessages(newMessagesFromServer));
       })
       .catch(error => {
         console.error('An error occurred while sending the message:', error);
       });
     setInput('');
-  };  
+  };
 
   // This function clears the chat history from the browser's local storage and Redux store
   const onClearChat = () => {
