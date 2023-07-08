@@ -1,12 +1,21 @@
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const partsRouter = require('./routes/parts');
 const chatRouter = require('./routes/chat');
 const { connectToMongoDB, getDb } = require('./db');
 const { initializeOpenAI } = require('./openai');
-const { OPENAI_API_KEY, MONGO_URI } = require('../config');
+const { OPENAI_API_KEY, MONGO_URI, } = require('../config');
 
 // Create Express app
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:3000' // only allow requests from localhost:3000
+}));
+
+// parse application/json
+app.use(bodyParser.json());
 
 // Middleware
 initializeOpenAI(OPENAI_API_KEY);
