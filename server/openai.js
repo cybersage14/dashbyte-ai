@@ -40,7 +40,7 @@ function extractMessage(response) {
 // It returns a promise that resolves to the response from the OpenAI API.
 async function getAiMessage(messages) {
   try {
-    console.log('Headers:', openai.defaults.headers); // Add this line
+    console.log('Headers:', openai.defaults.headers); // Logging for the API key
     const response = await openai.post(
       '/chat/completions',
       {

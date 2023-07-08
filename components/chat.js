@@ -38,9 +38,8 @@ function Chat() {
   // This function sends a message to the OpenAI API and adds the response to the Redux store
   const onSendMessage = () => {
     const newMessage = { role: 'user', content: input };
-    dispatch(addMessages([newMessage])); // Dispatch the new message to the Redux store
     const messages = [...chatState.messages, newMessage];
-
+  
     // Make a POST request to your own server
     axios.post('/api/chat', { messages })
       .then(response => {
@@ -52,13 +51,13 @@ function Chat() {
       });
     setInput('');
   };
-
+  
   // This function clears the chat history from the browser's local storage and Redux store
   const onClearChat = () => {
-    localStorage.setItem('chat', JSON.stringify([{ role: 'system', content: 'Start of the conversation.' }]));
+    localStorage.removeItem('chat');
     dispatch(clearMessages());
-    dispatch(addMessages([{ role: 'system', content: 'Start the conversation by typing a message below...' }]));
   };
+  
 
   // This function handles the user pressing the Enter key
   return (
