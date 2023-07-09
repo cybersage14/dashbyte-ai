@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+// This component is the chat list component.
 function ChatList({ messages }) {
   // Log the messages prop when it changes
   useEffect(() => {

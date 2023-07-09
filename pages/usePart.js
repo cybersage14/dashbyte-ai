@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 
+// This custom hook fetches a list of parts from the server.
 const usePart = (partType) => {
   const [partList, setPartList] = useState([]);
   const [selectedPart, setSelectedPart] = useState(null);
   const [error, setError] = useState(null);
 
+  // Fetch the list of parts from the server.
   useEffect(() => {
     const fetchParts = async () => {
       try {
@@ -23,6 +25,7 @@ const usePart = (partType) => {
     fetchParts();
   }, [partType]);
 
+  // This function is called when a part is selected.
   const onPartSelect = (part) => {
     setSelectedPart(part);
   };

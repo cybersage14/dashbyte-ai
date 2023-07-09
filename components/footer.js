@@ -1,5 +1,6 @@
 import React from 'react';
 
+// This component is the footer component.
 const Footer = () => {
   return (
   <footer className="inset-x-0 bottom-0 bg-gradient-to-r from-ai-cyan-solid to-user-blue-solid text-white py-8 px-4 text-center">

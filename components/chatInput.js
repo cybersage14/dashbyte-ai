@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
+// This component is the chat input component.
 function ChatInput({ onSendMessage, onClearChat }) {
   const [input, setInput] = useState('');
 
+  // When the user sends a message, send it to the server and add
   const handleSend = () => {
     onSendMessage(input);
     setInput('');

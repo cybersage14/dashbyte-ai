@@ -1,8 +1,10 @@
 import { useRef } from 'react';
 
+// This component is the chat panel component that displays the chat messages.
 function ChatPanel({ onSendMessage, onClearChat, input, setInput, messages }) {
   const inputRef = useRef();
 
+  // When the user sends a message, send it to the server and add
   const handleSendMessage = () => {
     onSendMessage();
     inputRef.current.focus();

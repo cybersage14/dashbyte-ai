@@ -3,6 +3,7 @@ import Header from '../components/header';
 import usePart from './usePart';
 import PartSelect from './partSelect';
 
+// This component is the PC builder page.
 function PcBuilder() {
   const cpu = usePart('CPU');
   const gpu = usePart('GPU');

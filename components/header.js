@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
+// This component is the header component.
 function Header() {
   return (
     <nav className="bg-transparent p-4 flex justify-between items-center">

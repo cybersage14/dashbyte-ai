@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './header';
 import Footer from './footer.js';
 
+// This component is the layout component.
 const Layout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">

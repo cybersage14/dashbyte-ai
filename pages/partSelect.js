@@ -1,5 +1,6 @@
 import React from 'react';
 
+// This component is the part select component.
 function PartSelect({ partType, partData }) {
   return (
     <div className="mb-4">

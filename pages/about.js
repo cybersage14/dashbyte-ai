@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '../components/layout';
 
+// This component is the about page.
 const About = () => {
   return (
     <Layout>
