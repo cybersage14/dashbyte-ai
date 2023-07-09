@@ -10,10 +10,9 @@ const chatSlice = createSlice({
   reducers: {
     addMessages: (state, action) => {
       console.log('Dispatching addMessages action with payload:', action.payload);
-      state.messages.push(action.payload);
+      state.messages = [...state.messages, ...action.payload];
       console.log('Updated state:', state);
     },
-    
     clearMessages: (state) => {
       state.messages = [];
     },
