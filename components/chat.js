@@ -17,7 +17,7 @@ function Chat() {
       dispatch(addMessages(JSON.parse(savedChat)));
     } else {
       const initialMessage = { 
-        role: 'assistant', 
+        role: 'system', 
         content: "Hello! I am your helpful assistant, ready to help you pick PC parts and build your dream computer. Please type your questions or requirements below."
       };
       dispatch(addMessages([initialMessage]));      
@@ -51,7 +51,7 @@ function Chat() {
     localStorage.removeItem('chat');
     dispatch(clearMessages());
     const initialMessage = { 
-      role: 'assistant', 
+      role: 'system', 
       content: "Hello! I am your helpful assistant, ready to help you pick PC parts and build your dream computer. Please type your questions or requirements below."
     };
     dispatch(addMessages([initialMessage]));    
