@@ -20,12 +20,9 @@ initializeOpenAI();
 
 // This function formats chat messages for interaction with the OpenAI API.
 function formatMessages(chatMessages) {
-  let messages = chatMessages.map(message => ({ role: message.role, content: message.content }));
-
-  // Add a default message if messages is empty
-  if (messages.length === 0) {
-    messages = [{ role: 'system', content: 'Start of the conversation.' }];
-  }
+  let messages = [{ role: 'system', content: 'You are a helpful assistant, who specializes in helping user pick PC parts and build computers.' }];
+  
+  messages = messages.concat(chatMessages.map(message => ({ role: message.role, content: message.content })));
 
   return messages;
 }
@@ -40,7 +37,6 @@ function extractMessage(response) {
 // It returns a promise that resolves to the response from the OpenAI API.
 async function getAiMessage(messages) {
   try {
-    console.log('Headers:', openai.defaults.headers); // Logging for the API key
     const response = await openai.post(
       '/chat/completions',
       {

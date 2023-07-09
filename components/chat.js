@@ -16,10 +16,10 @@ function Chat() {
     if (savedChat) {
       dispatch(addMessages(JSON.parse(savedChat)));
     } else {
-      const initialMessage = [{ role: 'system', content: 'Hello! I am your helpful assistant, ready to help you pick PC parts and build your dream computer. Please type your questions or requirements below.' }];
-      dispatch(addMessages(initialMessage));
+      const initialMessage = { role: 'system', content: 'Hello! I am your helpful assistant, ready to help you pick PC parts and build your dream computer. Please type your questions or requirements below.' };
+      dispatch(addMessages([initialMessage]));
     }
-  }, []);
+  }, [dispatch]);  
 
   useEffect(() => {
     localStorage.setItem('chat', JSON.stringify(chatState.messages));
