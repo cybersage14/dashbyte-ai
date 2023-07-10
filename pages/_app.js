@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { wrapper } from '../redux/store';
+import { PersistGate } from 'redux-persist/integration/react';  // Import PersistGate
+import { wrapper, persistor } from '../redux/store';  // Import persistor
 import '../styles/globals.css';
 
 // This component is the main app component.
@@ -14,7 +15,9 @@ function MyApp({ Component, ...rest }) {
   // Render the app
   return (
     <Provider store={store}>
-      <Component {...pageProps} />
+      <PersistGate loading={null} persistor={persistor}>
+        <Component {...pageProps} />
+      </PersistGate>
     </Provider>
   );
 }
