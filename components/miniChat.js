@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addMessages, clearMessages } from '../redux/chatSlice';
+import { addMessages, setMessages } from '../redux/chatSlice';
 
 const MiniChat = () => {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.chat.messages);
   const [isOpen, setIsOpen] = useState(true);
+
+  // Fetch messages from the server when the component mounts
+  useEffect(() => {
+    fetch('/api/chat')
+      .then((response) => response.json())
+      .then((data) => dispatch(setMessages(data.messages)));
+  }, [dispatch]);
 
   const sendMessage = (message) => {
     fetch('/api/chat', {
