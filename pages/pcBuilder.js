@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../components/header';
 import usePart from './usePart';
 import PartSelect from './partSelect';
+import MiniChat from '../components/miniChat';
 
 // This component is the PC builder page.
 function PcBuilder() {
@@ -33,6 +34,7 @@ function PcBuilder() {
             </li>
           ))}
         </ul>
+        <MiniChat />
       </div>
     </>
   );
