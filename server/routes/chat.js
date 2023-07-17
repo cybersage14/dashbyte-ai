@@ -13,13 +13,8 @@ router.post('/', async (req, res) => {
     const aiMessageContent = await getAiMessage(messages);
     const aiMessage = { role: 'assistant', content: aiMessageContent };
 
-    // Return the chat history to the client
-    const chat = {
-      messages: [...messages, aiMessage],
-    };
-
-    // Send the chat history to the client
-    res.json(chat);
+    // Send the new AI message to the client
+    res.json({ aiMessage });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to process chat message' });
