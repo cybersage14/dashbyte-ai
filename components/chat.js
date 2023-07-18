@@ -1,55 +1,73 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addMessages, setMessages } from '../redux/chatSlice';
-import { sendMessage } from './api/api';
-import { saveChatHistory, loadChatHistory } from './localStorage';
+import { addMessages, clearMessages } from '../redux/chatSlice';
+import axios from 'axios';
 import ChatPanel from './chatPanel';
 
+// This component is the main chat component. 
+// It is responsible for rendering the chat panel and handling the user's input.
 function Chat() {
-  const chatState = useSelector((state) => state.chat);
+  const chatState = useSelector(state => state.chat);
   const dispatch = useDispatch();
   const [input, setInput] = useState('');
 
-  // Load the chat history when the component mounts
+  // When the component is first rendered, load the chat history from local storage.
   useEffect(() => {
-    const savedChat = loadChatHistory();
+    const savedChat = localStorage.getItem('chat');
+    dispatch(clearMessages());
     if (savedChat) {
-      dispatch(setMessages(savedChat));
+      dispatch(addMessages(JSON.parse(savedChat)));
     } else {
       const initialMessage = { 
         role: 'system', 
         content: "Hello! I am your helpful assistant, ready to help you pick PC parts and build your dream computer. Please type your questions or requirements below."
       };
-      dispatch(addMessages([initialMessage]));
+      dispatch(addMessages([initialMessage]));      
     }
-  }, [dispatch]);
+  }, []);  
 
-  // Save the chat history whenever the chat state changes
+  // When the chat history changes, save it to local storage.
   useEffect(() => {
-    saveChatHistory(chatState.messages);
+    localStorage.setItem('chat', JSON.stringify(chatState.messages));
   }, [chatState.messages]);
 
+  // When the user sends a message, send it to the server and add 
+  // the AI's response to the chat history.
   const onSendMessage = () => {
     const newMessage = { role: 'user', content: input };
-    dispatch(addMessages([newMessage]));
-
+    dispatch(addMessages([newMessage]));  // Add the user's message to the Redux store
+  
     const messages = [...chatState.messages, newMessage];
-
-    sendMessage(messages)
-      .then((aiMessageContent) => {
+  
+    axios.post('/api/chat', { messages })
+      .then(response => {
+        const aiMessageContent = response.data.messages[response.data.messages.length - 1].content;
         const aiMessage = { role: 'assistant', content: aiMessageContent };
-        dispatch(addMessages([aiMessage]));
+        dispatch(addMessages([aiMessage]));  // Add the AI's message to the Redux store
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('An error occurred while sending the message:', error);
       });
-
+  
     setInput('');
   };
 
+  // When the user clears the chat, clear the Redux store and local storage.
+  const onClearChat = () => {
+    localStorage.removeItem('chat');
+    dispatch(clearMessages());
+    const initialMessage = { 
+      role: 'system', 
+      content: "Hello! I am your helpful assistant, ready to help you pick PC parts and build your dream computer. Please type your questions or requirements below."
+    };
+    dispatch(addMessages([initialMessage]));    
+  };    
+
+  // Render the chat panel.
   return (
     <div className="flex flex-col h-full bg-gray-800 bg-opacity-50">
-      <ChatPanel onSendMessage={onSendMessage} input={input} setInput={setInput} messages={chatState.messages} />
+      <ChatPanel onSendMessage={onSendMessage} onClearChat={onClearChat} input={input} setInput={setInput} messages={chatState.messages} />
     </div>
   );
 }
