@@ -1,76 +1,91 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addMessages, setMessages } from '../redux/chatSlice';
+import { addMessages, clearMessages } from '../redux/chatSlice';
+import axios from 'axios';
+import ChatInput from './chatInput';
+import ChatList from './chatList';
 
-const MiniChat = () => {
+function MiniChat() {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.chat.messages);
-  const [isOpen, setIsOpen] = useState(true);
+  const [input, setInput] = useState('');
+  const [isMinimized, setIsMinimized] = useState(false);  // New state variable for tracking minimized/maximized state
 
-  // Fetch messages from the server when the component mounts
   useEffect(() => {
-    fetch('/api/chat')
-      .then((response) => response.json())
-      .then((data) => dispatch(setMessages(data.messages)));
-  }, [dispatch]);
+    const savedChat = localStorage.getItem('chat');
+    dispatch(clearMessages());
+    if (savedChat) {
+      dispatch(addMessages(JSON.parse(savedChat)));
+    } else {
+      const initialMessage = { 
+        role: 'system', 
+        content: "Hello! I am your helpful assistant, ready to help you pick PC parts and build your dream computer. Please type your questions or requirements below."
+      };
+      dispatch(addMessages([initialMessage]));      
+    }
+  }, []);  
 
-  const sendMessage = (message) => {
-    fetch('/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ messages: [...messages, { role: 'user', content: message }] }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(addMessages(data.messages));
+  useEffect(() => {
+    localStorage.setItem('chat', JSON.stringify(messages));
+  }, [messages]);
+
+  const onSendMessage = () => {
+    const newMessage = { role: 'user', content: input };
+    dispatch(addMessages([newMessage]));  
+
+    const messagesWithNew = [...messages, newMessage];
+  
+    axios.post('/api/chat', { messages: messagesWithNew })
+      .then(response => {
+        const aiMessageContent = response.data.messages[response.data.messages.length - 1].content;
+        const aiMessage = { role: 'assistant', content: aiMessageContent };
+        dispatch(addMessages([aiMessage]));  
+      })
+      .catch(error => {
+        console.error('An error occurred while sending the message:', error);
       });
+
+    setInput('');
+  };
+
+  const onClearChat = () => {
+    localStorage.removeItem('chat');
+    dispatch(clearMessages());
+    const initialMessage = { 
+      role: 'system', 
+      content: "Hello! I am your helpful assistant, ready to help you pick PC parts and build your dream computer. Please type your questions or requirements below."
+    };
+    dispatch(addMessages([initialMessage]));    
+  };    
+
+  const handleToggleMinimize = () => {
+    setIsMinimized(!isMinimized);  // Toggle the isMinimized state when the button is clicked
   };
 
   return (
-    <div className="fixed bottom-0 right-0 m-4 z-50">
-      {isOpen && (
-        <div className="p-4 bg-white rounded-lg shadow-lg w-80 h-96 flex flex-col">
-          <div className="flex justify-end">
-            <button onClick={() => setIsOpen(!isOpen)}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 text-gray-500">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          <div className="overflow-auto flex-grow flex flex-col space-y-4">
-            {messages.map((message, index) => (
-              <div 
-                key={index}
-                className={`p-2 rounded-lg ${message.role === 'user' ? 'bg-user-blue text-white' : 'bg-ai-cyan text-white'}`}
-              >
-                <strong>{message.role === 'user' ? 'You' : 'AI'}: </strong>
-                {message.content}
-              </div>
-            ))}
-          </div>
-          <form 
-            onSubmit={(event) => {
-              event.preventDefault();
-              const message = event.target.elements.message.value;
-              sendMessage(message);
-              event.target.reset();
-            }}
-            className="mt-4"
-          >
-            <input className="w-full p-2 border border-user-blue-solid rounded-lg" type="text" name="message" />
-            <button className="w-full mt-2 px-4 py-2 bg-user-blue-solid text-white rounded-full" type="submit">Send</button>
-          </form>
-        </div>
-      )}
-      {!isOpen && (
-        <button className="px-4 py-2 bg-user-blue-solid text-white rounded-full" onClick={() => setIsOpen(!isOpen)}>
-          Open Chat
+    <>
+      {isMinimized && (
+        <button className="fixed bottom-4 right-4 bg-user-blue text-white p-2 rounded" onClick={handleToggleMinimize}>
+          <svg viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
+            <path fill-rule="evenodd" d="M5 11a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+          </svg>
         </button>
       )}
-    </div>
+
+      {!isMinimized && (
+        <div className="fixed bottom-4 right-4 w-96 h-96 bg-gray-800 bg-opacity-50 shadow-lg rounded-lg p-4 flex flex-col">
+          <button className="self-end mb-2 p-1 rounded bg-red-500 text-white" onClick={handleToggleMinimize}>
+            <svg viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
+              <path fill-rule="evenodd" d="M5 9a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <ChatList messages={messages} />
+          <ChatInput input={input} setInput={setInput} onSendMessage={onSendMessage} onClearChat={onClearChat} />
+        </div>
+      )}
+    </>
   );
-};
+}
 
 export default MiniChat;
+
