@@ -10,7 +10,6 @@ router.get('/:part', async (req, res) => {
 
     // Get the collection name from the part type
     const collectionName = `${partType}_UserBenchmarks`;
-    console.log(`Fetching parts of type ${partType} from collection ${collectionName}`);
     
     // Get the parts from the database
     const collection = db.collection(collectionName);
