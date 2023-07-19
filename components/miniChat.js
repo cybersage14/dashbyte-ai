@@ -67,7 +67,7 @@ function MiniChat() {
       {isMinimized && (
         <button className="fixed bottom-4 right-4 bg-user-blue text-white p-2 rounded" onClick={handleToggleMinimize}>
           <svg viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
-            <path fill-rule="evenodd" d="M5 11a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+            <path fillRule="evenodd" d="M5 9a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
           </svg>
         </button>
       )}
@@ -76,7 +76,7 @@ function MiniChat() {
         <div className="fixed bottom-4 right-4 w-96 h-96 bg-gray-800 bg-opacity-50 shadow-lg rounded-lg p-4 flex flex-col">
           <button className="self-end mb-2 p-1 rounded bg-red-500 text-white" onClick={handleToggleMinimize}>
             <svg viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
-              <path fill-rule="evenodd" d="M5 9a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+              <path fillRule="evenodd" d="M5 9a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
             </svg>
           </button>
           <ChatList messages={messages} />
