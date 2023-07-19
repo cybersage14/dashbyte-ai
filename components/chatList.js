@@ -1,29 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-// This component is the chat list component.
-function ChatList({ messages }) {
-  // Log the messages prop when it changes
-  useEffect(() => {
-    console.log('Messages:', messages);
-  }, [messages]);
+const ChatList = ({ messages }) => {
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(scrollToBottom, [messages]);
 
   return (
-    <div className="space-y-4 bg-gray-200 h-96 overflow-auto p-4">
-    {messages.length > 0 ? messages.map((message, index) => (
-      !(message.role === 'system' && index === 0) && (
-      <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} mx-2`}>
-        <div className={`inline-block ${message.role === 'user' ? 'bg-user-blue text-white rounded-br-none' : 'bg-middle-gradient text-white rounded-bl-none'} rounded-md p-2`}>
-          {message.content}
+    <div className="overflow-auto p-4 flex-grow">
+      {messages.map((message, index) => (
+        <div key={index} className={`my-2 p-2 rounded-lg ${message.role === 'user' ? 'bg-user-blue ml-auto text-right text-white' : 'bg-middle-gradient mr-auto text-left text-white'}`}>
+          <p className="text-sm">{message.content}</p>
         </div>
-      </div>
-      )
-    )) : (
-      <div className="max-w-xs mx-2 bg-white text-gray-800 rounded-md p-2">
-        Start a conversation by typing a message below...
-      </div>
-    )}
+      ))}
     </div>
   );
-}
+};
 
 export default ChatList;
