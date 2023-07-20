@@ -32,3 +32,25 @@ body {
   background-position: center;
   background-size: 50%;
 }
+
+/* Scrollbar styling */
+.overflow-auto::-webkit-scrollbar {
+  width: 10px;
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+  background: #2a2a2a;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.overflow-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #2a2a2a;
+}

@@ -16,8 +16,9 @@ const ChatList = ({ messages }) => {
           <p className="text-sm">{message.content}</p>
         </div>
       ))}
+      <div ref={messagesEndRef} />
     </div>
-  );
+  );  
 };
 
 export default ChatList;
