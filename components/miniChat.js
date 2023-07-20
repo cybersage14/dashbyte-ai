@@ -65,16 +65,16 @@ function MiniChat() {
   return (
     <>
       {isMinimized && (
-        <button className="fixed bottom-4 right-4 bg-user-blue text-white p-2 rounded" onClick={handleToggleMinimize}>
-          <svg viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
-            <path fillRule="evenodd" d="M5 9a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
+        <button className="fixed bottom-4 right-4 bg-user-blue text-white p-2 rounded scale-150" onClick={handleToggleMinimize}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h6l4 4 4-4h2a1 1 0 001-1z" />
           </svg>
         </button>
       )}
-
+  
       {!isMinimized && (
         <div className="fixed bottom-4 right-4 w-96 h-96 bg-gray-800 bg-opacity-50 shadow-lg rounded-lg p-4 flex flex-col">
-          <button className="self-end mb-2 p-1 rounded bg-red-500 text-white" onClick={handleToggleMinimize}>
+          <button className="self-start mb-2 p-1 rounded bg-red-500 text-white scale-75" onClick={handleToggleMinimize}>
             <svg viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
               <path fillRule="evenodd" d="M5 9a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
             </svg>
@@ -84,7 +84,7 @@ function MiniChat() {
         </div>
       )}
     </>
-  );
+  );  
 }
 
 export default MiniChat;
