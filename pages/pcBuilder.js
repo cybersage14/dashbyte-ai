@@ -58,14 +58,26 @@ function PcBuilder() {
     <>
       <Header />
       <div className="p-4">
-        <h1 className="text-4xl font-bold mb-4">PC Builder Page</h1>
-        <p className="text-lg mb-4">Select parts to build your PC:</p>
-        <PartSelect partType="CPU" partData={cpu} />
-        <PartSelect partType="GPU" partData={gpu} />
-        <PartSelect partType="RAM" partData={ram} />
-        <PartSelect partType="SSD" partData={ssd} />
-        <PartSelect partType="HDD" partData={hdd} />
-        <PartSelect partType="USB" partData={usb} />
+        <div className="flex justify-center items-top h-screen">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="col-span-1 flex flex-col items-end space-y-4">
+              <PartSelect partType="CPU" partData={cpu} />
+              <PartSelect partType="GPU" partData={gpu} />
+            </div>
+
+            <div className="col-span-1 flex flex-col space-y-4 items-center">
+              <PartSelect partType="RAM" partData={ram} />
+              {/* Center Column: Place PC Image Here */}
+              <img src="/path-to-image.jpg" alt="PC Image" className="w-64 h-64" />
+              <PartSelect partType="SSD" partData={ssd} />
+            </div>
+
+            <div className="col-span-1 flex flex-col items-start space-y-4">
+              <PartSelect partType="HDD" partData={hdd} />
+              <PartSelect partType="USB" partData={usb} />
+            </div>
+          </div>
+        </div>
         <h2 className="text-2xl font-bold mt-4 mb-2">Selected Parts:</h2>
         <ul className="list-disc pl-5">
           {selectedParts.map(part => part && (
