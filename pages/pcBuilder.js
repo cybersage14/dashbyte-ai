@@ -58,7 +58,7 @@ function PcBuilder() {
     <>
       <Header />
       <div className="p-4">
-        <div className="flex justify-center items-top h-screen">
+        <div className="flex justify-center items-top">
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-1 flex flex-col items-end space-y-4">
               <PartSelect partType="CPU" partData={cpu} />
