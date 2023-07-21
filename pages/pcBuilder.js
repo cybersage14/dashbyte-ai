@@ -65,8 +65,19 @@ function PcBuilder() {
             </li>
           ))}
         </ul>
-        <button onClick={handleSendPartsList}>Send parts list to AI</button>  {/* Add this button */}
-        <button onClick={handleClearPartsList}>Clear parts list</button>  {/* Add this button */}
+        <button 
+          onClick={handleSendPartsList} 
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Send parts list to AI
+        </button>
+
+        <button 
+          onClick={handleClearPartsList} 
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
+        >
+          Clear parts list
+        </button>
         <MiniChat />
       </div>
     </>
