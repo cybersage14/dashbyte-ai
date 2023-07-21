@@ -1,13 +1,13 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';  // Import useDispatch from react-redux
-import { addMessages } from '../redux/chatSlice';  // Import the addMessages action from your chat slice
-import { clearParts } from '../redux/partSlice'; // Import the clearParts action
+import { useSelector, useDispatch } from 'react-redux';
+import { addMessages } from '../redux/chatSlice';
+import { clearParts } from '../redux/partSlice';
+import axios from 'axios';
 import Header from '../components/header';
 import usePart from './usePart';
 import PartSelect from './partSelect';
 import MiniChat from '../components/miniChat';
 
-// This component is the PC builder page.
 function PcBuilder() {
   const cpu = usePart('CPU');
   const gpu = usePart('GPU');
@@ -16,11 +16,10 @@ function PcBuilder() {
   const hdd = usePart('HDD');
   const usb = usePart('USB');
   const selectedParts = [cpu.selectedPart, gpu.selectedPart, ram.selectedPart, ssd.selectedPart, hdd.selectedPart, usb.selectedPart];
-
-  // Get the dispatch function from Redux
+  
   const dispatch = useDispatch();
+  const messages = useSelector((state) => state.chat.messages);
 
-  // Define a function to send a message to the AI with the selected parts
   const handleSendPartsList = () => {
     let partsMessage = "The user has selected the following parts:\n";
 
@@ -31,12 +30,22 @@ function PcBuilder() {
     }
 
     dispatch(addMessages([{ role: 'user', content: partsMessage }]));
+
+    // New code: send the messages to the server
+    axios.post('/api/chat', { messages: [...messages, { role: 'user', content: partsMessage }] })
+      .then(response => {
+        const aiMessageContent = response.data.messages[response.data.messages.length - 1].content;
+        const aiMessage = { role: 'assistant', content: aiMessageContent };
+        dispatch(addMessages([aiMessage]));
+      })
+      .catch(error => {
+        console.error('An error occurred while sending the message:', error);
+      });
   };
 
   const handleClearPartsList = () => {
     dispatch(clearParts());
-  
-    // Also clear the selected parts from localStorage
+
     localStorage.removeItem('CPU');
     localStorage.removeItem('GPU');
     localStorage.removeItem('RAM');
