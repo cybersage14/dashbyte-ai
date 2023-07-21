@@ -13,6 +13,22 @@ const usePart = (partType) => {
   // Initialize the dispatch function
   const dispatch = useDispatch();
 
+  // Load the selected part from localStorage when the component mounts
+  useEffect(() => {
+    const savedPart = localStorage.getItem(partType);
+
+    if (savedPart) {
+      dispatch(selectPart({ partType, part: JSON.parse(savedPart) }));
+    }
+  }, []);
+
+  // Save the selected part to localStorage whenever it changes
+  useEffect(() => {
+    if (selectedPart) {
+      localStorage.setItem(partType, JSON.stringify(selectedPart));
+    }
+  }, [selectedPart]);
+
   // Fetch the list of parts from the server.
   useEffect(() => {
     const fetchParts = async () => {
