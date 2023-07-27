@@ -64,11 +64,10 @@ function PcBuilder() {
               <PartSelect partType="CPU" partData={cpu} />
               <PartSelect partType="GPU" partData={gpu} />
             </div>
-
             <div className="col-span-1 flex flex-col space-y-4 items-center">
               <PartSelect partType="RAM" partData={ram} />
               {/* Center Column: Place PC Image Here */}
-              <img src="/path-to-image.jpg" alt="PC Image" className="w-64 h-64" />
+              <img src="/images/4kLogoOnly.png" alt="PC Image" className="w-64 h-64" />
               <PartSelect partType="SSD" partData={ssd} />
             </div>
 
